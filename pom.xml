@@ -262,7 +262,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- The plugins' release version -->
-        <release.version>2.16.1.2</release.version>
+        <release.version>2.16.1.3</release.version>
 
         <!-- The plugins' build number -->
         <build.version>-TF</build.version>
