@@ -39,12 +39,7 @@
 
     <modules>
         <module>Essentials</module>
-        <module>EssentialsAntiBuild</module>
-        <module>EssentialsChat</module>
-        <module>EssentialsGeoIP</module>
-        <module>EssentialsProtect</module>
         <module>EssentialsSpawn</module>
-        <module>EssentialsXMPP</module>
         <module>nms/NMSProvider</module>
         <module>nms/UpdatedMetaProvider</module>
         <module>nms/1_8_R1Provider</module>
@@ -100,26 +95,6 @@
                         <artifactItem>
                             <groupId>${project.groupId}</groupId>
                             <artifactId>EssentialsX</artifactId>
-                            <version>${project.version}</version>
-                        </artifactItem>
-                        <artifactItem>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>EssentialsXAntiBuild</artifactId>
-                            <version>${project.version}</version>
-                        </artifactItem>
-                        <artifactItem>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>EssentialsXChat</artifactId>
-                            <version>${project.version}</version>
-                        </artifactItem>
-                        <artifactItem>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>EssentialsXGeoIP</artifactId>
-                            <version>${project.version}</version>
-                        </artifactItem>
-                        <artifactItem>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>EssentialsXProtect</artifactId>
                             <version>${project.version}</version>
                         </artifactItem>
                         <artifactItem>
@@ -295,7 +270,7 @@
         <release.version>2.17.1</release.version>
 
         <!-- The plugins' build number -->
-        <build.version>${git.closest.tag.commit.count}</build.version>
+        <build.version>0-TF</build.version>
 
         <full.version>${release.version}.${build.version}</full.version>
     </properties>
