@@ -35,6 +35,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -554,6 +555,9 @@ public class Settings implements net.ess3.api.ISettings {
         allowOldIdSigns = _allowOldIdSigns();
         isWaterSafe = _isWaterSafe();
         isSafeUsermap = _isSafeUsermap();
+        logCommandBlockCommands = _logCommandBlockCommands();
+        nickBlacklist = _getNickBlacklist();
+        maxProjectileSpeed = _getMaxProjectileSpeed();
     }
 
     void _lateLoadItemSpawnBlacklist() {
@@ -1575,5 +1579,48 @@ public class Settings implements net.ess3.api.ISettings {
     @Override
     public boolean isSafeUsermap() {
         return isSafeUsermap;
+    }
+
+    private boolean logCommandBlockCommands;
+
+    private boolean _logCommandBlockCommands() {
+        return config.getBoolean("log-command-block-commands", true);
+    }
+
+    @Override
+    public boolean logCommandBlockCommands() {
+        return logCommandBlockCommands;
+    }
+
+    private Set<Predicate<String>> nickBlacklist;
+
+    private Set<Predicate<String>> _getNickBlacklist() {
+        Set<Predicate<String>> blacklist = new HashSet<>();
+
+        config.getStringList("nick-blacklist").forEach(entry -> {
+            try {
+                blacklist.add(Pattern.compile(entry).asPredicate());
+            } catch (PatternSyntaxException e) {
+                logger.warning("Invalid nickname blacklist regex: " + entry);
+            }
+        });
+
+        return blacklist;
+    }
+
+    @Override
+    public Set<Predicate<String>> getNickBlacklist() {
+        return nickBlacklist;
+    }
+
+    private double maxProjectileSpeed;
+
+    private double _getMaxProjectileSpeed() {
+        return config.getDouble("max-projectile-speed", 8);
+    }
+
+    @Override
+    public double getMaxProjectileSpeed() {
+        return maxProjectileSpeed;
     }
 }

@@ -79,8 +79,8 @@ public class Kits implements IConf {
         config.save();
     }
 
-    public void deleteKit(String name) {
-        config.removeProperty("kits." + name);
+    public void removeKit(String name) {
+        config.set("kits." + name, null);
         kits = _getKits();
         config.save();
     }

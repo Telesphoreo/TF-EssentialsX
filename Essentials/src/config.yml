@@ -32,6 +32,12 @@ nickname-prefix: '~'
 # The maximum length allowed in nicknames. The nickname prefix is included in this.
 max-nick-length: 15
 
+# A list of phrases that cannot be used in nicknames. You can include regular expressions here.
+# Users with essentials.nick.blacklist.bypass will be able to bypass this filter.
+nick-blacklist:
+#- Notch
+#- '^Dinnerbone'
+
 # When this option is enabled, nickname length checking will exclude color codes in player names.
 # ie: "&6Notch" has 7 characters (2 are part of a color code), a length of 5 is used when this option is set to true
 ignore-colors-in-max-nick-length: false
@@ -568,6 +574,10 @@ is-water-safe: false
 # You should only change this to false if you use Minecraft China.
 safe-usermap-names: true
 
+# Should Essentials output logs when a command block executes a command?
+# Example: CommandBlock at <x>,<y>,<z> issued server command: /<command>
+log-command-block-commands: true
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                   EssentialsHome                     | #
@@ -603,6 +613,9 @@ sethome-multiple:
 # Leaving this as false will retain Essentials' original behaviour, which is to always
 # change the compass' direction to point towards their first home.
 compass-towards-home-perm: false
+
+# Set the maximum speed for projectiles spawned with /fireball.
+max-projectile-speed: 8
 
 ############################################################
 # +------------------------------------------------------+ #
