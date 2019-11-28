@@ -439,6 +439,7 @@ public class Settings implements net.ess3.api.ISettings {
             mFormat = mFormat.replace("{TEAMNAME}", "{5}");
             mFormat = mFormat.replace("{PREFIX}", "{6}");
             mFormat = mFormat.replace("{SUFFIX}", "{7}");
+            mFormat = mFormat.replace("{USERNAME}", "{8}");
             mFormat = "§r".concat(mFormat);
             chatFormats.put(group, mFormat);
         }
@@ -1622,5 +1623,10 @@ public class Settings implements net.ess3.api.ISettings {
     @Override
     public double getMaxProjectileSpeed() {
         return maxProjectileSpeed;
+    }
+
+    @Override
+    public boolean isSpawnIfNoHome() {
+        return config.getBoolean("spawn-if-no-home", true);
     }
 }
