@@ -655,12 +655,10 @@ public class OfflinePlayer implements Player {
 
     @Override
     public void sendExperienceChange(float v) {
-
     }
 
     @Override
     public void sendExperienceChange(float v, int i) {
-
     }
 
     @Override
