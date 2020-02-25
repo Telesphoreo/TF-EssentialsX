@@ -274,7 +274,7 @@
         <release.version>2.17.2</release.version>
 
         <!-- The plugins' build number -->
-        <build.version>4-TF</build.version>
+        <build.version>0-TF</build.version>
 
         <full.version>${release.version}.${build.version}</full.version>
     </properties>
