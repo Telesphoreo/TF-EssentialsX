@@ -866,7 +866,7 @@ public class FakeWorld implements World {
 
     @Override
     public DragonBattle getEnderDragonBattle() {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

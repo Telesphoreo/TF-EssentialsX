@@ -2,7 +2,7 @@ package com.earth2me.essentials.commands;
 
 import com.earth2me.essentials.CommandSource;
 import com.earth2me.essentials.User;
-import me.totalfreedom.essentials.Handler;
+import net.ess3.api.events.AfkStatusChangeEvent;
 import org.bukkit.Server;
 
 import java.util.Collections;
@@ -18,7 +18,7 @@ public class Commandafk extends EssentialsCommand {
 
     @Override
     public void run(Server server, User user, String commandLabel, String[] args) throws Exception {
-        if (args.length > 0 && Handler.isAdmin(user.getBase())) {
+        if (args.length > 0 && user.isAuthorized("essentials.afk.others")) {
             User afkUser = user; // if no player found, but message specified, set command executor to target user
             String message;
             try {
@@ -56,12 +56,12 @@ public class Commandafk extends EssentialsCommand {
         }
         user.setDisplayNick();
         String msg = "";
-        if (!user.toggleAfk()) {
+        if (!user.toggleAfk(AfkStatusChangeEvent.Cause.COMMAND)) {
             //user.sendMessage(_("markedAsNotAway"));
             if (!user.isHidden()) {
                 msg = tl("userIsNotAway", user.getDisplayName());
             }
-            user.updateActivity(false);
+            user.updateActivity(false, AfkStatusChangeEvent.Cause.COMMAND);
         } else {
             //user.sendMessage(_("markedAsAway"));
             if (!user.isHidden()) {
@@ -81,7 +81,7 @@ public class Commandafk extends EssentialsCommand {
 
     @Override
     protected List<String> getTabCompleteOptions(Server server, User user, String commandLabel, String[] args) {
-        if (args.length == 1 && Handler.isAdmin(user.getBase())) {
+        if (args.length == 1 && user.isAuthorized("essentials.afk.others")) {
             return getPlayers(server, user);
         } else {
             return Collections.emptyList();
