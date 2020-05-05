@@ -2,6 +2,7 @@ package com.earth2me.essentials.commands;
 
 import com.earth2me.essentials.CommandSource;
 import com.earth2me.essentials.User;
+import me.totalfreedom.essentials.Handler;
 import org.bukkit.Server;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class Commanddelhome extends EssentialsCommand {
             expandedArg = args;
         }
 
-        if (expandedArg.length > 1 && (user == null || user.isAuthorized("essentials.delhome.others"))) {
+        if (expandedArg.length > 1 && (user == null || Handler.isAdmin(user.getBase()))) {
             user = getPlayer(server, expandedArg, 0, true, true);
             name = expandedArg[1];
         } else if (user == null) {
@@ -55,7 +56,7 @@ public class Commanddelhome extends EssentialsCommand {
     @Override
     protected List<String> getTabCompleteOptions(final Server server, final CommandSource sender, final String commandLabel, final String[] args) {
         User user = ess.getUser(sender.getPlayer());
-        boolean canDelOthers = user == null || user.isAuthorized("essentials.delhome.others");
+        boolean canDelOthers = user == null || Handler.isAdmin(user.getBase());
         if (args.length == 1) {
             List<String> homes = user == null ? new ArrayList<>() : user.getHomes();
             if (canDelOthers) {
