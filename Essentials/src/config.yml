@@ -196,6 +196,18 @@ socialspy-commands:
 # If so, they will be differentiated from those sent by normal players.
 socialspy-listen-muted-players: true
 
+# The following settings listen for when a player changes worlds.
+# If you use another plugin to control speed and flight, you should change these to false.
+
+# When a player changes world, should EssentialsX reset their flight?
+# This will disable flight if the player does not have essentials.fly.
+world-change-fly-reset: true
+
+# When a player changes world, should we reset their speed according to their permissions?
+# This resets the player's speed to the default if they don't have essentials.speed.
+# If the player doesn't have essentials.speed.bypass, this resets their speed to the maximum specified above.
+world-change-speed-reset: true
+
 # Mute Commands
 # These commands will be disabled when a player is muted.
 # Use '*' to disable every command.
@@ -666,6 +678,10 @@ command-costs:
 # such as accented letters, you MUST save the file as UTF-8, not ANSI.
 currency-symbol: '$'
 
+# Enable this to make the currency symbol appear at the end of the amount rather than at the start.
+# For example, the euro symbol typically appears after the current amount.
+currency-symbol-suffix: false
+
 # Set the maximum amount of money a player can have.
 # The amount is always limited to 10 trillion because of the limitations of a java double.
 max-money: 10000000000000
@@ -783,6 +799,7 @@ protect:
     creeper-explosion: false
     creeper-playerdamage: false
     creeper-blockdamage: false
+    ender-crystal-explosion: false
     enderdragon-blockdamage: true
     enderman-pickup: false
     villager-death: false

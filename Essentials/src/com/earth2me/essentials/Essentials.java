@@ -284,6 +284,9 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
             permissionsHandler = new PermissionsHandler(this, settings.useBukkitPermissions());
             alternativeCommandsHandler = new AlternativeCommandsHandler(this);
 
+            // Register hat permissions
+            Commandhat.registerPermissionsIfNecessary(getServer().getPluginManager());
+
             timer = new EssentialsTimer(this);
             scheduleSyncRepeatingTask(timer, 1000, 50);
 
@@ -567,9 +570,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
                     cmd.run(getServer(), user, commandLabel, command, args);
                 }
                 return true;
-            } catch (NoChargeException ex) {
-                return true;
-            } catch (QuietAbortException ex) {
+            } catch (NoChargeException | QuietAbortException ex) {
                 return true;
             } catch (NotEnoughArgumentsException ex) {
                 sender.sendMessage(command.getDescription());

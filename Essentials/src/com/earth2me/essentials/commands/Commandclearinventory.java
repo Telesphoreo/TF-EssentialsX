@@ -1,20 +1,18 @@
 package com.earth2me.essentials.commands;
 
-import static com.earth2me.essentials.I18n.tl;
-
 import com.earth2me.essentials.CommandSource;
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.craftbukkit.InventoryWorkaround;
 import com.earth2me.essentials.utils.NumberUtil;
 import com.earth2me.essentials.utils.StringUtil;
-
-import me.totalfreedom.essentials.Handler;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+
+import static com.earth2me.essentials.I18n.tl;
 
 
 public class Commandclearinventory extends EssentialsCommand {
@@ -28,8 +26,8 @@ public class Commandclearinventory extends EssentialsCommand {
 
     @Override
     public void run(Server server, User user, String commandLabel, String[] args) throws Exception {
-        parseCommand(server, user.getSource(), commandLabel, args, Handler.isAdmin(user.getBase()),
-            Handler.isAdmin(user.getBase()));
+        parseCommand(server, user.getSource(), commandLabel, args, user.isAuthorized("essentials.clearinventory.others"),
+            user.isAuthorized("essentials.clearinventory.all") || user.isAuthorized("essentials.clearinventory.multiple"));
     }
 
     @Override
@@ -39,7 +37,7 @@ public class Commandclearinventory extends EssentialsCommand {
 
     private void parseCommand(Server server, CommandSource sender, String commandLabel, String[] args, boolean allowOthers, boolean allowAll)
         throws Exception {
-        Collection<Player> players = new ArrayList<Player>();
+        Collection<Player> players = new ArrayList<>();
         User senderUser = ess.getUser(sender.getPlayer());
         String previousClearCommand = "";
         
@@ -154,7 +152,7 @@ public class Commandclearinventory extends EssentialsCommand {
         if (user.isAuthorized("essentials.clearinventory.others")) {
             if (args.length == 1) {
                 List<String> options = getPlayers(server, user);
-                if (Handler.isAdmin(user.getBase())) {
+                if (user.isAuthorized("essentials.clearinventory.all") || user.isAuthorized("essentials.clearinventory.multiple")) {
                     // Assume that nobody will have the 'all' permission without the 'others' permission
                     options.add("*");
                 }
@@ -196,6 +194,6 @@ public class Commandclearinventory extends EssentialsCommand {
     }
 
     private String formatCommand(String commandLabel, String[] args) {
-        return "/" + commandLabel + " " + StringUtil.joinList(" ", (Object[]) args);
+        return "/" + commandLabel + " " + StringUtil.joinList(" ", args);
     }
 }

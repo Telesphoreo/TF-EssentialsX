@@ -48,6 +48,8 @@ public interface ISettings extends IConf {
 
     String getCurrencySymbol();
 
+    boolean isCurrencySymbolSuffixed();
+
     int getOversizedStackSize();
 
     int getDefaultStackSize();
@@ -293,6 +295,10 @@ public interface ISettings extends IConf {
     boolean isTeleportToCenterLocation();
 
     boolean isCommandCooldownsEnabled();
+
+    boolean isWorldChangeFlyResetEnabled();
+
+    boolean isWorldChangeSpeedResetEnabled();
 
     long getCommandCooldownMs(String label);
 

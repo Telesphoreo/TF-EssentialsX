@@ -356,7 +356,7 @@ public class EssentialsPlayerListener implements Listener {
             }
 
             class DelayMotdTask implements Runnable {
-                private User user;
+                private final User user;
 
                 public DelayMotdTask(User user) {
                     this.user = user;
@@ -581,27 +581,31 @@ public class EssentialsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerChangedWorldFlyReset(final PlayerChangedWorldEvent event) {
         final User user = ess.getUser(event.getPlayer());
-        if (user.getBase().getGameMode() != GameMode.CREATIVE
-                // COMPAT: String compare for 1.7.10
-                && !user.getBase().getGameMode().name().equals("SPECTATOR")
-                && !user.isAuthorized("essentials.fly")) {
-            user.getBase().setFallDistance(0f);
-            user.getBase().setAllowFlight(false);
-        }
-        if (!user.isAuthorized("essentials.speed")) {
-            user.getBase().setFlySpeed(0.1f);
-            user.getBase().setWalkSpeed(0.2f);
-        } else {
-            if (user.getBase().getFlySpeed() > ess.getSettings().getMaxFlySpeed() && !user.isAuthorized("essentials.speed.bypass")) {
-                user.getBase().setFlySpeed((float) ess.getSettings().getMaxFlySpeed());
-            } else {
-                user.getBase().setFlySpeed(user.getBase().getFlySpeed() * 0.99999f);
-            }
 
-            if (user.getBase().getWalkSpeed() > ess.getSettings().getMaxWalkSpeed() && !user.isAuthorized("essentials.speed.bypass")) {
-                user.getBase().setWalkSpeed((float) ess.getSettings().getMaxWalkSpeed());
+        if (ess.getSettings().isWorldChangeFlyResetEnabled()) {
+            if (user.getBase().getGameMode() != GameMode.CREATIVE
+                    // COMPAT: String compare for 1.7.10
+                    && !user.getBase().getGameMode().name().equals("SPECTATOR")
+                    && !user.isAuthorized("essentials.fly")) {
+                user.getBase().setFallDistance(0f);
+                user.getBase().setAllowFlight(false);
+            }
+        }
+
+        if (ess.getSettings().isWorldChangeSpeedResetEnabled()) {
+            if (!user.isAuthorized("essentials.speed")) {
+                user.getBase().setFlySpeed(0.1f);
+                user.getBase().setWalkSpeed(0.2f);
             } else {
-                user.getBase().setWalkSpeed(user.getBase().getWalkSpeed() * 0.99999f);
+                if (user.getBase().getFlySpeed() > ess.getSettings().getMaxFlySpeed() && !user.isAuthorized("essentials.speed.bypass")) {
+                    user.getBase().setFlySpeed((float) ess.getSettings().getMaxFlySpeed());
+                } else {
+                    user.getBase().setFlySpeed(user.getBase().getFlySpeed() * 0.99999f);
+                }
+
+                if (user.getBase().getWalkSpeed() > ess.getSettings().getMaxWalkSpeed() && !user.isAuthorized("essentials.speed.bypass")) {
+                    user.getBase().setWalkSpeed((float) ess.getSettings().getMaxWalkSpeed());
+                }
             }
         }
     }
@@ -705,7 +709,6 @@ public class EssentialsPlayerListener implements Listener {
         // We need to loop through each command and execute
         for (final String command : commandList) {
             if (command.contains("{player}")) {
-                continue;
             } else if (command.startsWith("c:")) {
                 used = true;
                 user.getBase().chat(command.substring(2));
@@ -742,7 +745,7 @@ public class EssentialsPlayerListener implements Listener {
         if (type == InventoryType.PLAYER) {
             final User user = ess.getUser((Player) event.getWhoClicked());
             final InventoryHolder invHolder = top.getHolder();
-            if (invHolder != null && invHolder instanceof HumanEntity) {
+            if (invHolder instanceof HumanEntity) {
                 final User invOwner = ess.getUser((Player) invHolder);
                 if (user.isInvSee() && (!user.isAuthorized("essentials.invsee.modify") || invOwner.isAuthorized("essentials.invsee.preventmodify") || !invOwner.getBase().isOnline())) {
                     event.setCancelled(true);
@@ -764,7 +767,7 @@ public class EssentialsPlayerListener implements Listener {
         } else if (type == InventoryType.CHEST && top.getSize() == 9) {
             final User user = ess.getUser((Player) event.getWhoClicked());
             final InventoryHolder invHolder = top.getHolder();
-            if (invHolder != null && invHolder instanceof HumanEntity && user.isInvSee()) {
+            if (invHolder instanceof HumanEntity && user.isInvSee()) {
                 event.setCancelled(true);
                 refreshPlayer = user.getBase();
             }
@@ -782,8 +785,7 @@ public class EssentialsPlayerListener implements Listener {
         }
 
         if (refreshPlayer != null) {
-            final Player player = refreshPlayer;
-            ess.scheduleSyncDelayedTask(player::updateInventory, 1);
+            ess.scheduleSyncDelayedTask(refreshPlayer::updateInventory, 1);
         }
     }
 
@@ -809,7 +811,7 @@ public class EssentialsPlayerListener implements Listener {
             }
         } else if (type == InventoryType.CHEST && top.getSize() == 9) {
             final InventoryHolder invHolder = top.getHolder();
-            if (invHolder != null && invHolder instanceof HumanEntity) {
+            if (invHolder instanceof HumanEntity) {
                 final User user = ess.getUser((Player) event.getPlayer());
                 user.setInvSee(false);
                 refreshPlayer = user.getBase();
@@ -817,8 +819,7 @@ public class EssentialsPlayerListener implements Listener {
         }
 
         if (refreshPlayer != null) {
-            final Player player = refreshPlayer;
-            ess.scheduleSyncDelayedTask(player::updateInventory, 1);
+            ess.scheduleSyncDelayedTask(refreshPlayer::updateInventory, 1);
         }
     }
 
@@ -831,7 +832,7 @@ public class EssentialsPlayerListener implements Listener {
     private final class ArrowPickupListener implements Listener {
         @EventHandler(priority = EventPriority.LOW)
         public void onArrowPickup(final org.bukkit.event.player.PlayerPickupArrowEvent event) {
-            if (event.getArrow().hasMetadata(Commandfireball.FIREBALL_META_KEY)) {
+            if (event.getItem().hasMetadata(Commandfireball.FIREBALL_META_KEY)) {
                 event.setCancelled(true);
             }
         }
